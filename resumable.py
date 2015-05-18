@@ -39,10 +39,10 @@ def create():
     if (currentSize + request.form.get('resumableCurrentChunkSize', default=1, type=int) ) >= filesize:
 
         target_file_name = "{}/{}".format(temp_base, request.form.get('resumableFilename', default='error', type=str))
-        with open(target_file_name, "a") as target_file:
+        with open(target_file_name, "ab") as target_file:
             for i in range(1, request.form.get('resumableChunkNumber', default=1, type=int)+1):
                 stored_chunk_file_name = "{}/{}.part{}".format(temp_dir, request.form.get('resumableFilename', default='error', type=str), str(i))
-                stored_chunk_file = open(stored_chunk_file_name, 'r')
+                stored_chunk_file = open(stored_chunk_file_name, 'rb')
                 target_file.write( stored_chunk_file.read() )
                 stored_chunk_file.close()
                 os.unlink(stored_chunk_file_name)
